@@ -3,7 +3,7 @@ import { Form, Input, Button } from "antd";
 import Link from "next/link";
 import styled from "styled-components";
 
-const LoginForm = () => {
+const LoginForm = ({setIsLoggedIn}) => {
     const [id, setId] = useState('');
     const [passWord, setPassWord] = useState('');
 
@@ -14,11 +14,16 @@ const LoginForm = () => {
     const onChangePassword = useCallback((e) => {
         setPassWord(e.target.value);
     }, []);
-
+    
     // const style = useMemo(() => ({marginTop: 10}), [])
+    
+    const onSubmitForm = useCallback(() => {
+        console.log(id, passWord) 
+        setIsLoggedIn(true);
+    }, [id, passWord]);
 
     return (
-        <Form>
+        <FormWrapper onFinish={onSubmitForm}>
             <div>
                 <label htmlFor="user-id">아이디</label>
                 <br />
@@ -41,7 +46,7 @@ const LoginForm = () => {
             <div>
 
             </div>
-        </Form>
+        </FormWrapper>
     )
 }
 
@@ -49,4 +54,8 @@ export default LoginForm;
 
 const ButtonWrapper = styled.div`
     margin-top: 10px;
+`;
+
+const FormWrapper = styled(Form)`
+    padding: 10px;
 `;
