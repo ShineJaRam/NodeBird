@@ -1,24 +1,25 @@
-import React, {useState, useCallback, useMemo} from "react";
+import React, {useCallback, useMemo} from "react";
 import { Form, Input, Button } from "antd";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../reducers"
 import Link from "next/link";
 import styled from "styled-components";
+import useInput from "../hooks/useInput";
 
 const LoginForm = () => {
-    const [id, setId] = useState('');
-    const [passWord, setPassWord] = useState('');
-
-    const onChangeId = useCallback((e) => {
-        setId(e.target.value);
-    }, []);
-
-    const onChangePassword = useCallback((e) => {
-        setPassWord(e.target.value);
-    }, []);
-
+    const dispatch = useDispatch();
+    const [id, onChangeId] = useInput('');
+    const [password, onChangePassword] = useInput('');
+    
     // const style = useMemo(() => ({marginTop: 10}), [])
+    
+    const onSubmitForm = useCallback(() => {
+        console.log(id, password) 
+        dispatch(loginAction({id, password}))
+    }, [id, password]);
 
     return (
-        <Form>
+        <FormWrapper onFinish={onSubmitForm}>
             <div>
                 <label htmlFor="user-id">아이디</label>
                 <br />
@@ -30,7 +31,7 @@ const LoginForm = () => {
                 <Input
                     name="user-password"
                     type="password"
-                    value={passWord}
+                    value={password}
                     onChange={onChangePassword}
                 />
             </div>
@@ -41,7 +42,7 @@ const LoginForm = () => {
             <div>
 
             </div>
-        </Form>
+        </FormWrapper>
     )
 }
 
@@ -49,4 +50,8 @@ export default LoginForm;
 
 const ButtonWrapper = styled.div`
     margin-top: 10px;
+`;
+
+const FormWrapper = styled(Form)`
+    padding: 10px;
 `;
